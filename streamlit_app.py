@@ -35,8 +35,26 @@ try:
       back_from_function = get_fruityvice_data(fruit_choice)
       streamlit.dataframe(back_from_function) 
 except URLError as e: 
-  streamlit.error()
-    
+  streamlit.error() 
+
+  
+streamlit.header("The fruit load list contains:")
+def get_fruit_load_list(): 
+  with  my_cnx.cursor() as my_cur:
+    my_cur.execute("select * from fruit_load_list")
+    return my_cur.fetchall()
+
+if streamlit.button('Get Fruit Load List'):
+  my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+  my_data_rows = get_fruit_load_list()
+  streamlit.dataframe(my_data_rows)
+  
+  
+ 
+#streamlit.dataframe(my_data_rows)
+#fruit_choice1 = streamlit.text_input('What fruit would you like to add?','jackfruit')
+#streamlit.write('Thanks for adding ', fruit_choice1)
+
   #  streamlit.write('The user entered ', fruit_choice)
 
 #fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
